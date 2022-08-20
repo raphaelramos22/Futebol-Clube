@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
+import AuthToken from '../services/authTokenServices';
 import loginService from '../services/loginService';
 
 export default class Login {
@@ -10,5 +11,10 @@ export default class Login {
     }catch (err) {
       next(err);
     }
+  }
+  static async validate(req: Request, res: Response) {
+    const { authorization } = req.headers;
+    const role = await AuthToken.validate(authorization);
+    res.status(200).json( { role } );
   }
 }

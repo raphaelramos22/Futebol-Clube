@@ -21,7 +21,7 @@ export default class Login{
     throw e;
   }
 
-     const token = await Jwt.createToken(login);
+     const token = Jwt.createToken(login);
     return token;
   }
 
