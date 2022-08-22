@@ -9,4 +9,7 @@ export default class Matches{
     ] });
     return allMatches;
   }
+   static async update(id: number): Promise<void> {
+    await Matche.update({ inProgress: false }, { where: { id } })
+   }
 }
