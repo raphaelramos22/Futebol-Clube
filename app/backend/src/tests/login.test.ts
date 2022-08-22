@@ -4,15 +4,15 @@ import * as chai from 'chai';
 import chaiHttp = require('chai-http');
 
 import { app } from '../app';
-import Example from '../database/models/ExampleModel';
-
+import User from '../database/models/User';
+import Login from '../services/loginService';
 import { Response } from 'superagent';
 
 chai.use(chaiHttp);
 
 const { expect } = chai;
 
-describe('Seu teste', () => {
+describe('teste login', () => {
   /**
    * Exemplo do uso de stubs com tipos
    */
