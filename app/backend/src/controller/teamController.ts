@@ -9,5 +9,14 @@ export default class Teams {
     } catch (err) {
       next(err);
     }
- }
+  }
+  static async getById(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { id } = req.params;
+      const team = await TeamService.getById(Number(id));
+      res.status(200).json(team);
+    } catch (err) {
+      next(err);
+    }
+  }
 }
