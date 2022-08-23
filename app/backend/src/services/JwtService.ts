@@ -28,7 +28,7 @@ export default class Jwt {
     } catch (_err) {
       const e = new Error();
       e.name = 'UnauthorizedError';
-      e.message = 'Expired or invalid token';
+      e.message = 'Token must be a valid token';
       throw e;
     }
   };
