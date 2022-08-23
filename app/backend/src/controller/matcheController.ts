@@ -10,6 +10,14 @@ export default class MatchesController {
       next(err);
     }
   }
+  static async create(req: Request, res: Response, next: NextFunction) {
+    try{
+      const newMatche = await MatchesService.create(req.body);
+      res.status(201).json(newMatche);
+    } catch (err) {
+      next(err);
+    }
+  }
   static async update(req: Request, res: Response, next: NextFunction) {
     try{
       await MatchesService.update(Number(req.params.id));

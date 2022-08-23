@@ -12,7 +12,7 @@ export default class Matches{
   }
 
   static async create (data: matches){
-    const newMatche = await Matche.create({ ...data, inProgress: 1 });
+    const newMatche = await Matche.create({ ...data, inProgress: true });
     return newMatche;
   }
    static async update(id: number): Promise<void> {
