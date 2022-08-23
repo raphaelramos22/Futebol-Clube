@@ -1,6 +1,6 @@
 import Team from '../database/models/Team';
 import Matche from '../database/models/Matche';
-import matches from '../interfaces/IMatche';
+import IMatches from '../interfaces/IMatche';
 
 export default class Matches{
   static async getAll(): Promise<Matches[]> {
@@ -11,7 +11,14 @@ export default class Matches{
     return allMatches;
   }
 
-  static async create (data: matches){
+  static async create (data: IMatches){
+    if(data.awayTeam === data.homeTeam){
+      const e = new Error();
+      e.name = 'UnauthorizedError';
+      e.message = 'It is not possible to create a match with two equal teams';
+      throw e;
+    }
+
     const newMatche = await Matche.create({ ...data, inProgress: true });
     return newMatche;
   }
