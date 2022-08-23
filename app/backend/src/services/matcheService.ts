@@ -1,5 +1,6 @@
 import Team from '../database/models/Team';
 import Matche from '../database/models/Matche';
+import matches from '../interfaces/IMatche';
 
 export default class Matches{
   static async getAll(): Promise<Matches[]> {
@@ -8,6 +9,11 @@ export default class Matches{
       { model: Team, as: 'teamAway', attributes: ['teamName'] },
     ] });
     return allMatches;
+  }
+
+  static async create (data: matches){
+    const newMatche = await Matche.create({ ...data, inProgress: 1 });
+    return newMatche;
   }
    static async update(id: number): Promise<void> {
     await Matche.update({ inProgress: false }, { where: { id } })
