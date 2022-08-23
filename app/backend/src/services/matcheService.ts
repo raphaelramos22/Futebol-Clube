@@ -18,7 +18,16 @@ export default class Matches{
       e.message = 'It is not possible to create a match with two equal teams';
       throw e;
     }
+    const homeTeam = await Team.findOne({ where: { id: data.homeTeam } });
 
+    const awayTeam = await Team.findOne({ where: { id: data.awayTeam } });
+
+    if (!homeTeam || !awayTeam){
+      const e = new Error();
+      e.name = 'NotFoundError';
+      e.message = 'There is no team with such id!';
+      throw e;
+    }
     const newMatche = await Matche.create({ ...data, inProgress: true });
     return newMatche;
   }
