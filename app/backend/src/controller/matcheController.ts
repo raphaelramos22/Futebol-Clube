@@ -26,5 +26,13 @@ export default class MatchesController {
       next(err);
     }
   }
+  static async updateGols(req: Request, res: Response, next: NextFunction) {
+    try{
+      await MatchesService.UpadateGoals(Number(req.params.id), req.body);
+      return res.status(200).json({ message: 'Updated!' });
+    } catch (err) {
+      next(err);
+    }
+  }
 }
 

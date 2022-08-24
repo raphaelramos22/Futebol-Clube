@@ -36,6 +36,6 @@ export default class Matches{
     await Matche.update({ inProgress: false }, { where: { id } })
   }
   static async UpadateGoals(id:number, data: IGoals ):Promise<void> {
-    await Matche.update
+    await Matche.update ({ ...data }, { where: { id } });
   }   
 }
