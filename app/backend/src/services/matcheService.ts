@@ -1,6 +1,7 @@
 import Team from '../database/models/Team';
 import Matche from '../database/models/Matche';
 import IMatches from '../interfaces/IMatche';
+import IGoals from '../interfaces/IGoals';
 
 export default class Matches{
   static async getAll(): Promise<Matches[]> {
@@ -11,7 +12,7 @@ export default class Matches{
     return allMatches;
   }
 
-  static async create (data: IMatches){
+  static async create (data: IMatches):Promise<Matches>{
     if(data.awayTeam === data.homeTeam){
       const e = new Error();
       e.name = 'UnauthorizedError';
@@ -31,7 +32,10 @@ export default class Matches{
     const newMatche = await Matche.create({ ...data, inProgress: true });
     return newMatche;
   }
-   static async update(id: number): Promise<void> {
+  static async update(id: number): Promise<void> {
     await Matche.update({ inProgress: false }, { where: { id } })
-   }
+  }
+  static async UpadateGoals(id:number, data: IGoals ):Promise<void> {
+    await Matche.update
+  }   
 }

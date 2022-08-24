@@ -8,7 +8,7 @@ const tokenMiddleware = async (req: Request, res: Response, next: NextFunction) 
   if (!token) {
     const e = new Error();
     e.name = 'UnauthorizedError';
-    e.message = 'Token not found';
+    e.message = 'Token must be a valid token';
     throw e;
   }
 
