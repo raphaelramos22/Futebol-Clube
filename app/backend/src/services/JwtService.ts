@@ -22,14 +22,7 @@ export default class Jwt {
   }
   
   static validateToken (token: string) {
-    try {
-      const data = jwt.verify(token, JWT_SECRET);
-      return data as JwtPayload;
-    } catch (_err) {
-      const e = new Error();
-      e.name = 'UnauthorizedError';
-      e.message = 'Token must be a valid token';
-      throw e;
-    }
+    const data = jwt.verify(token, JWT_SECRET);
+    return data as JwtPayload;
   };
 };
