@@ -3,6 +3,7 @@ import errorMiddleware from './middlewares/error';
 import login from './router/loginRouter';
 import teams from './router/teamRouter'
 import matches from './router/matcheRouter'
+import leaderboard from './router/leaderboardRouter';
 
 
 
@@ -31,6 +32,7 @@ class App {
     this.app.use(login);
     this.app.use(teams);
     this.app.use(matches);
+    this.app.use(leaderboard)
     this.app.use(errorMiddleware)
   }
 
