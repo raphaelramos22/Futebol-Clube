@@ -19,13 +19,13 @@ export default class LeaderBoardService {
   };
    
   static getRankingHome = async () => {
-      const matchers = await Team.findAll({
+      const matches = await Team.findAll({
         include: [
           { model: Matches, as: 'homeTeam', where: { inProgress: false } },
         ],
       });
   
-    const fineshedMatches = matchers as unknown as ITeamHome[];
+    const fineshedMatches = matches as unknown as ITeamHome[];
     
   
     const ranking =  fineshedMatches.map(rankingHome.calculateHome);
