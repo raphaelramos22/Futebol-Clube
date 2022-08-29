@@ -5,7 +5,7 @@ export default class Login {
   static async login(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
     try {
     const login = req.body;
-    const token = await loginService.Login(login);
+    const token = await loginService.login(login);
     return res.status(200).json({ token });
     }catch (err) {
       next(err);

@@ -4,7 +4,7 @@ import User from '../database/models/User';
 
 
 export default class Login{
-  static async Login(login:ILogin) {
+  static async login(login:ILogin) {
   const {email, password} = login
   
   if(!email || !password){
