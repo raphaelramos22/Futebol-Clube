@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import LeaderboardServices from '../services/leaderboardServices';
+import LeaderboardServices from '../services/leaderboardService';
 
 export default class LeaderboardController {
   static async getRankingHome(req: Request, res: Response, next: NextFunction) {
