@@ -10,4 +10,12 @@ export default class LeaderboardController {
       next(err);
     }
   }
+  static async getRankingAway(req: Request, res: Response, next: NextFunction) {
+    try {
+      const leaderboard = await LeaderboardServices.getRankingAway();
+      res.status(200).json(leaderboard );
+    } catch (err) {
+      next(err);
+    }
+  }
 }
