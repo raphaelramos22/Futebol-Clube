@@ -18,3 +18,9 @@ export interface ITeamHome {
   teamName: string,
   homeTeam: matches[],
 }
+
+export interface ITeamAway {
+  id?: number,
+  teamName: string,
+  awayTeam: matches[],
+}
