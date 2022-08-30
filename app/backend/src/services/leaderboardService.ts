@@ -1,6 +1,7 @@
+import rankingAway from '../utils/rankingAway';
 import Matches from '../database/models/Matche';
 import Team from '../database/models/Team';
-import { ILeaderBoard, ITeamHome } from '../interfaces/ILeadeboard';
+import { ILeaderBoard, ITeamAway, ITeamHome } from '../interfaces/ILeadeboard';
 import rankingHome from '../utils/rankingHome';
 
 export default class LeaderBoardService {
@@ -32,4 +33,18 @@ export default class LeaderBoardService {
 
     return ranking.sort(this.orderRanking);
   }
+  static getRankingAway = async () => {
+    const matches = await Team.findAll({
+      include: [
+        { model: Matches, as: 'awayTeam', where: { inProgress: false } },
+      ],
+    });
+
+  const fineshedMatches = matches as unknown as ITeamAway[];
+  
+
+  const ranking =  fineshedMatches.map(rankingAway.calculateAway);
+
+  return ranking.sort(this.orderRanking);
+}
 }
