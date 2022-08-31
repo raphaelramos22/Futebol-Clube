@@ -37,9 +37,9 @@ describe('/login', () => {
           email: "user@admin.com",
           password: "secret_admin"
         })
-      chai.expect(result.status).to.be.equal(200);
-      chai.expect(result.body).to.be.a('object');
-      chai.expect(result.body).to.have.a.property('token');
+      expect(result.status).to.be.equal(200);
+      expect(result.body).to.be.a('object');
+      expect(result.body).to.have.a.property('token');
     })
 
     it('O campo email estiver vazio deve falhar', async ()  => {
@@ -83,8 +83,8 @@ describe('/login', () => {
           password: "secret_admin",
         });
 
-      chai.expect(result.status).to.be.equal(401)
-      chai.expect(result.body.message).to.be.equal('Incorrect email or password')
+      expect(result.status).to.be.equal(401)
+      expect(result.body.message).to.be.equal('Incorrect email or password')
     })
   })
 });
