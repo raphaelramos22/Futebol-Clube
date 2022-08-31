@@ -1,45 +1,90 @@
-import * as sinon from 'sinon';
+import * as Sinon from 'sinon';
 import * as chai from 'chai';
-// @ts-ignore
+import * as bcryptjs from 'bcryptjs';
+//@ts-ignore
 import chaiHttp = require('chai-http');
 
 import { app } from '../app';
 import User from '../database/models/User';
-import Login from '../services/loginService';
-import { Response } from 'superagent';
 
 chai.use(chaiHttp);
 
 const { expect } = chai;
 
-describe('teste login', () => {
-  /**
-   * Exemplo do uso de stubs com tipos
-   */
+const data = {
+  id: 1,
+  username: 'user',
+  role: 'admin',
+  email: 'user@admin.com',
+  password: bcryptjs.hashSync('secret_admin'),
+}
 
-  // let chaiHttpResponse: Response;
+describe('/login', () => {
 
-  // before(async () => {
-  //   sinon
-  //     .stub(Example, "findOne")
-  //     .resolves({
-  //       ...<Seu mock>
-  //     } as Example);
-  // });
+  describe('Testando caso de sucessso e de erros de campo vazio', () => {
+    beforeEach(() => {
+      Sinon.stub(User, "findAll").resolves([data as User]);
+    })
 
-  // after(()=>{
-  //   (Example.findOne as sinon.SinonStub).restore();
-  // })
+    afterEach(() => {
+      Sinon.restore();
+    })
 
-  // it('...', async () => {
-  //   chaiHttpResponse = await chai
-  //      .request(app)
-  //      ...
+    it('Em caso de sucesso retorna um status 200 e um token', async () => {
+      const result = await chai.request(app)
+        .post('/login')
+        .send({
+          email: "user@admin.com",
+          password: "secret_admin"
+        })
+      chai.expect(result.status).to.be.equal(200);
+      chai.expect(result.body).to.be.a('object');
+      chai.expect(result.body).to.have.a.property('token');
+    })
 
-  //   expect(...)
-  // });
+    it('O campo email estiver vazio deve falhar', async ()  => {
+      const result = await chai.request(app)
+        .post('/login')
+        .send({
+          email: null,
+          password: 'secret_admin',
+        });
+        expect(result).to.have.status(400);
+        expect(result.body.message).to.be.deep.equal('All fields must be filled');
+    });
+    it('O campo password estiver vazio deve falhar', async ()  => {
+      const result = await chai.request(app)
+        .post('/login')
+        .send({
+          email: 'user@admin.com',
+          password: null
+        });
+        expect(result).to.have.status(400);
+        expect(result.body.message).to.be.deep.equal('All fields must be filled');
+    });
+})
 
-  it('Seu sub-teste', () => {
-    expect(false).to.be.eq(true);
-  });
+  describe('Testando erro de campo incorreto', () => {
+
+    beforeEach(async () => {
+      Sinon.stub(User, "findOne")
+        .resolves(null);
+    });
+
+    afterEach(() => {
+      (User.findOne as Sinon.SinonStub).restore();
+    })
+
+    it(' Se o email estiver incorreto deve falhar', async () => {
+      const result = await chai.request(app)
+        .post('/login')
+        .send({
+          email: 'test@test.com',
+          password: "secret_admin",
+        });
+
+      chai.expect(result.status).to.be.equal(401)
+      chai.expect(result.body.message).to.be.equal('Incorrect email or password')
+    })
+  })
 });
