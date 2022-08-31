@@ -3,6 +3,7 @@ import Matches from '../database/models/Matche';
 import Team from '../database/models/Team';
 import { ILeaderBoard, ITeamAway, ITeamHome } from '../interfaces/ILeadeboard';
 import rankingHome from '../utils/rankingHome';
+import rankingGeneral from '../utils/ranking';
 
 export default class LeaderBoardService {
   static orderRanking = (a: ILeaderBoard, b: ILeaderBoard) => {
@@ -40,11 +41,24 @@ export default class LeaderBoardService {
       ],
     });
 
-  const fineshedMatches = matches as unknown as ITeamAway[];
+    const fineshedMatches = matches as unknown as ITeamAway[];
   
 
-  const ranking =  fineshedMatches.map(rankingAway.calculateAway);
+    const ranking =  fineshedMatches.map(rankingAway.calculateAway);
 
-  return ranking.sort(this.orderRanking);
-}
+    return ranking.sort(this.orderRanking);
+  }
+
+  static async getRanking(): Promise<ILeaderBoard[]> {
+    const matches = await Team.findAll({
+      include: [
+        { model: Matches, as: 'awayTeam', where: { inProgress: 0 } },
+        { model: Matches, as: 'homeTeam', where: { inProgress: 0 } },
+      ],
+    });
+
+    const ranking =  matches.map(rankingGeneral.calculateGeral);
+
+    return ranking.sort(this.orderRanking);
+  }
 }
